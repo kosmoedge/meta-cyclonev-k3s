@@ -1,0 +1,66 @@
+name: Lint
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  oelint:
+    name: BitBake Recipe Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install oelint-adv
+        run: pip install oelint-adv
+
+      - name: Run oelint-adv
+        run: |
+          # Find all .bb and .bbappend files and lint them
+          find . -type f \( -name "*.bb" -o -name "*.bbappend" \) -print0 | \
+            xargs -0 oelint-adv --exit-zero || true
+          # Run again with exit code for CI (warnings allowed, errors fail)
+          find . -type f \( -name "*.bb" -o -name "*.bbappend" \) -print0 | \
+            xargs -0 oelint-adv --nowarn
+
+  kconfig:
+    name: Kernel Config Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate kernel config fragments
+        run: |
+          chmod +x scripts/validate-kconfig.sh
+          find . -name "fragment.cfg" -o -name "*.cfg" -path "*/files/*" | while read cfg; do
+            echo "Validating: $cfg"
+            ./scripts/validate-kconfig.sh "$cfg"
+          done
+
+  markdown:
+    name: Markdown Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install markdownlint-cli
+        run: npm install -g markdownlint-cli
+
+      - name: Run markdownlint
+        run: markdownlint '**/*.md' --config .markdownlint.json
+

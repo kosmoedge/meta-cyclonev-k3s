@@ -72,5 +72,6 @@ This layer is provided under the MIT License. See [COPYING.MIT](COPYING.MIT) for
 
 ## Maintainers
 
-- Nikos Fotiadis
+- Dimitris Fotiou @fotioudim
+- Nikos Fotiou @nikfot
 
