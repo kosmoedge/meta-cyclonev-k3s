@@ -79,5 +79,5 @@ This layer is provided under the MIT License. See [COPYING.MIT](COPYING.MIT) for
 
 ## Maintainers
 
-- Dimitris Fotiou @fotioudim
-- Nikos Fotiou @nikfot
+- [Dimitris Fotiou](https://github.com/fotioudim)
+- [Nikos Fotiou](https://github.com/nikfot)
