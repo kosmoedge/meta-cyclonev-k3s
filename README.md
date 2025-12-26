@@ -1,19 +1,26 @@
 # meta-cyclonev-k3s
 
-A Yocto/OpenEmbedded layer that provides kernel and system configurations required to run k3s on Intel Cyclone V SoC FPGA development kits. Built on top of the Intel GSRD (Kirkstone branch).
+A Yocto/OpenEmbedded layer that provides kernel and system configurations
+required to run k3s on Intel Cyclone V SoC FPGA development kits.
+Built on top of the Intel GSRD (Kirkstone branch).
 
 ## Description
 
-**meta-cyclonev-k3s** extends the Intel Cyclone V Golden System Reference Design (GSRD) with support for k3s, a lightweight Kubernetes distribution optimized for edge and IoT deployments. It provides the necessary kernel configurations (cgroups, namespaces, networking, iptables/IPVS) and system modifications to enable container orchestration on resource-constrained FPGA-based SoC hardware.
+**meta-cyclonev-k3s** extends the Intel Cyclone V Golden System Reference
+Design (GSRD) with support for k3s, a lightweight Kubernetes distribution
+optimized for edge and IoT deployments. It provides the necessary kernel
+configurations (cgroups, namespaces, networking, iptables/IPVS) and system
+modifications to enable container orchestration on resource-constrained
+FPGA-based SoC hardware.
 
 ## Dependencies
 
 This layer depends on:
 
-| Layer | URI |
-|-------|-----|
-| openembedded-core | https://git.openembedded.org/openembedded-core |
-| meta-intel-fpga | https://git.yoctoproject.org/meta-intel-fpga |
+| Layer             | URI                                                  |
+|-------------------|------------------------------------------------------|
+| openembedded-core | <https://git.openembedded.org/openembedded-core>     |
+| meta-intel-fpga   | <https://git.yoctoproject.org/meta-intel-fpga>       |
 
 ## Compatibility
 
@@ -74,4 +81,3 @@ This layer is provided under the MIT License. See [COPYING.MIT](COPYING.MIT) for
 
 - Dimitris Fotiou @fotioudim
 - Nikos Fotiou @nikfot
-
