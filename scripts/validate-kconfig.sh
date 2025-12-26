@@ -50,7 +50,7 @@ ERRORS=0
 LINE_NUM=0
 
 while IFS= read -r line || [[ -n "$line" ]]; do
-    ((LINE_NUM++))
+    LINE_NUM=$((LINE_NUM + 1))
     
     # Check if line matches any valid pattern
     VALID=0
@@ -63,7 +63,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     
     if [[ $VALID -eq 0 ]]; then
         echo "Error at line $LINE_NUM: $line"
-        ((ERRORS++))
+        ERRORS=$((ERRORS + 1))
     fi
 done < "$CONFIG_FILE"
 
