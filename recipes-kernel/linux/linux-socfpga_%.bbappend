@@ -6,3 +6,5 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 # Add kernel configuration fragment for k3s requirements
 SRC_URI += "file://fragment.cfg"
 
+# Ensure kernel builds as modules where applicable
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragment.cfg"
