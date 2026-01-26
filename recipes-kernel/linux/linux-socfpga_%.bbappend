@@ -4,5 +4,12 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 # Add kernel configuration fragment for k3s requirements
-# kernel-yocto class automatically merges .cfg files from SRC_URI
 SRC_URI:append = " file://fragment.cfg"
+
+# Explicitly merge the fragment into kernel .config
+# Required because linux-socfpga does not use kernel-yocto class
+do_configure:append() {
+    if [ -f "${WORKDIR}/fragment.cfg" ]; then
+        ${S}/scripts/kconfig/merge_config.sh -m -O ${B} ${B}/.config ${WORKDIR}/fragment.cfg
+    fi
+}
