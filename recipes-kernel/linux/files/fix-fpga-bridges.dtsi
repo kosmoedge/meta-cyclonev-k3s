@@ -1,0 +1,44 @@
+/*
+ * Fix FPGA bridge configuration for runtime bitstream deployment.
+ *
+ * The upstream socfpga.dtsi defines four FPGA bridges, all with
+ * status = "disabled", and base_fpga_region has no fpga-bridges
+ * property. This means:
+ *   - Bridge drivers never probe (status disabled)
+ *   - fpga_region has no bridges to manage during overlay apply
+ *   - U-Boot leaves bridges physically enabled
+ *   - FPGA fabric reset (nCONFIG) propagates through live bridges
+ *   - AXI fault → kernel panic
+ *
+ * This fix:
+ *   1. Enables the two HPS-initiated bridge drivers so the kernel
+ *      can disable them before programming and re-enable after.
+ *   2. Registers them with base_fpga_region so fpga_region
+ *      coordinates bridge disable/enable during overlay apply.
+ *   3. Leaves fpga2hps and fpga2sdram alone:
+ *      - fpga2sdram disable corrupts the active SDRAM controller
+ *      - fpga2hps disable triggers regmap_write() fault on some
+ *        kernel versions
+ *      Both are safe as-is during reprogramming because the FPGA
+ *      cannot initiate AXI transactions while in reset.
+ *
+ * References:
+ *   - Cyclone V HPS TRM, Chapter 4 (FPGA Manager)
+ *   - Intel GSRD documentation for Cyclone V
+ *   - docs/CYCLONEV_DTB_BRIDGE_FIX.md (test matrix)
+ */
+
+/* Enable the lightweight HPS-to-FPGA bridge driver */
+&fpga_bridge0 {
+	status = "okay";
+};
+
+/* Enable the HPS-to-FPGA bridge driver */
+&fpga_bridge1 {
+	status = "okay";
+};
+
+/* Register only the safe bridges with fpga_region */
+&base_fpga_region {
+	fpga-bridges = <&fpga_bridge0 &fpga_bridge1>;
+};
