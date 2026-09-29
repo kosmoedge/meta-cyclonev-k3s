@@ -46,6 +46,14 @@ Modifies `/etc/fstab` to mount cgroup filesystems at boot:
 - `cgroup2` (unified hierarchy)
 - `cgroup` (legacy v1 support)
 
+### Network Manager (`recipes-connectivity/connman/`)
+
+Installs `/etc/connman/main.conf` with a `NetworkInterfaceBlacklist` for
+container interfaces (`veth`, `cni`, `flannel`, `vxlan`, `docker`). Without
+it ConnMan gives every pod veth a 169.254/16 address and, after any `eth0`
+link flap, moves the default route onto a veth, which cuts the node off from
+DNS, image registries and Git.
+
 ## Usage
 
 ### Adding the Layer
